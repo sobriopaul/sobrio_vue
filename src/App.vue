@@ -2,51 +2,51 @@
 import { ref, onMounted } from 'vue'
 import TodoItem from './components/TodoItem.vue'
 
-const todos = ref([])
+const notes = ref([])
 
-const newTodo = ref('')
+const newNote = ref('')
 
-function addTodo() {
-  if (newTodo.value.trim() === '') {
+function addNote() {
+  if (newNote.value.trim() === '') {
     return
   }
 
-  todos.value.push({
+  notes.value.push({
     id: Date.now(),
-    title: newTodo.value,
+    title: newNote.value,
     completed: false
   })
 
-  newTodo.value = ''
+  newNote.value = ''
 
-  saveTodos()
+  saveNotes()
 }
 
-function deleteTodo(id) {
-  todos.value = todos.value.filter(todo => todo.id !==id )
+function deleteNote(id) {
+  notes.value = notes.value.filter(note => note.id !== id)
 
-  saveTodos()
+  saveNotes()
 }
 
-function updateTodo(updatedTodo) {
-  const index = todos.value.findIndex(todo => todo.id === updatedTodo.id)
+function updateNote(updatedNote) {
+  const index = notes.value.findIndex(note => note.id === updatedNote.id)
 
   if (index !== -1) {
-    todos.value[index] = updatedTodo
+    notes.value[index] = updatedNote
   }
 
-  saveTodos()
+  saveNotes()
 }
 
-function saveTodos() {
- localStorage.setItem('todos', JSON.stringify(todos.value))
+function saveNotes() {
+  localStorage.setItem('notes', JSON.stringify(notes.value))
 }
 
 onMounted(() => {
-  const savedTodos = localStorage.getItem('todos')
+  const savedNotes = localStorage.getItem('notes')
 
-  if (savedTodos) {
-    todos.value = JSON.parse(savedTodos)
+  if (savedNotes) {
+    notes.value = JSON.parse(savedNotes)
   }
 })
 
@@ -56,31 +56,29 @@ onMounted(() => {
 <template>
   <div class="container">
 
-    <h1>My To-Do List</h1>
+    <h1>My Notes</h1>
 
-    <!-- Add Todo -->
     <div class="add-todo">
       <input
-      v-model="newTodo"
+      v-model="newNote"
       type="text"
-      placeholder="Enter a task"
-      @keyup.enter="addTodo"
+      placeholder="Enter a note"
+      @keyup.enter="addNote"
       />
 
-      <button @click="addTodo">
+      <button @click="addNote">
         Add
       </button>
     </div>
 
-    <!-- Todo List -->
     <div class="todo-list">
 
       <TodoItem
-      v-for="todo in todos"
-      :key="todo.id"
-      :todo="todo"
-      @delete="deleteTodo"
-      @update="updateTodo"
+      v-for="note in notes"
+      :key="note.id"
+      :todo="note"
+      @delete="deleteNote"
+      @update="updateNote"
       />
 
     </div>

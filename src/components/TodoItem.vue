@@ -2,12 +2,12 @@
 import { ref } from 'vue'
 
 const props = defineProps({
-    todo: Object 
+    todo: Object
 })
 
 const emit = defineEmits([
  'delete',
- 'update'   
+ 'update'
 ])
 
 const isEditing = ref(false)
@@ -31,8 +31,6 @@ function toggleCompleted() {
         ...props.todo,
         completed: !props.todo.completed
     })
-
-    
 }
 
 function deleteTask() {
@@ -44,7 +42,6 @@ function startEditing() {
     isEditing.value = true
 }
 
-
 </script>
 
 
@@ -52,7 +49,6 @@ function startEditing() {
 
   <div class="todo-item">
 
-    <!-- Normal Mode -->
     <div v-if="!isEditing">
 
       <input
@@ -75,13 +71,11 @@ function startEditing() {
 
     </div>
 
-    <!-- Edit Mode -->
     <div v-else>
 
       <input
         v-model="editedTitle"
         @keyup.enter="updateTask"
-        
       />
 
       <button @click="updateTask">
